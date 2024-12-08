@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CPSC 597 Project</title>
+</head>
+<body>
+    <h1 style="text-align: center;">CPSC 597 Project: Credit Card Fraud Detection</h1>
+    <h2 style="text-align: center;">Hayley Huynh</h2>
+    <!--https://www.geeksforgeeks.org/what-does-enctypemultipart-form-data-mean-in-an-html-form/-->
+    <form id="uploadForm" action="/analyze" method="post" enctype="multipart/form-data">
+        <!--https://www.geeksforgeeks.org/how-to-create-input-field-that-accept-csv-file-in-html/-->
+        <input type="file" accept=".csv">
+        <button type="submit">Analyze</button>
+    </form>
+    <div id="results" class="results"></div>
+  
+    <!--javascript-->
+    <script>
+        const form = document.getElementById('uploadForm');
+        form.onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            const resultsDiv = document.getElementById('results');
+            
+            if (data.metrics) {
+                // display metrics
+                let metricsHtml = '<h2>Metrics:</h2><ul>';
+                for (const key in data.metrics) {
+                    metricsHtml += `<li><strong>${key}:</strong> ${data.metrics[key]}</li>`;
+                }
+                metricsHtml += '</ul>';
+                
+                resultsDiv.innerHTML = metricsHtml;
+
+                // display plots
+                let plotsHtml = '<h2>Plots:</h2>';
+                for (const plot in data.plots) {
+                    plotsHtml += `<h3>${plot.replace('_', ' ').toUpperCase()}</h3>`;
+                    plotsHtml += `<img src="data:image/png;base64,${data.plots[plot]}" alt="${plot}">`;
+                }
+                resultsDiv.innerHTML += plotsHtml;
+            } else {
+                resultsDiv.innerHTML = '<p>No file uploaded or error occurred.</p>';
+            }
+        };
+    </script>
+</body>
+</html>
