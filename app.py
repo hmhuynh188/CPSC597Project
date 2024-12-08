@@ -13,7 +13,7 @@ import io
 import base64
 
 app = Flask(__name__) # starts Flask application 
-CORS(app)  # handles requests 
+CORS(app)  # handles requests - got help from AI with Flask and how to read into the file to create histograms 
 
 def process_data(file):
     data = pd.read_csv(file)
@@ -59,7 +59,7 @@ def process_data(file):
     )
 
     # train the model 
-    rfc = RandomForestClassifier(random_state=42)  # Set random_state
+    rfc = RandomForestClassifier(random_state=42)  
     rfc.fit(xTrain, yTrain)
     yPred = rfc.predict(xTest)
 
