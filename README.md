@@ -14,3 +14,5 @@ Press CTRL+C to quit
  * Debugger PIN: 561-503-295
 
 Click on the link, as it will be directed to the front end, where the upload and analyze buttons are. From there, upload a CSV file using the upload button before clicking on the analyze button for the dataset to be analyzed. If you would like a new file to be analyzed, refresh the page and continue the process. If you would like to quit, go back to the back end and press CTRL and the C button - this will stop the application from running. 
+
+Note: Because this project utilizes Flask, Flask must be installed or imported beforehand. 
