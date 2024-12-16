@@ -81,18 +81,19 @@ def process_data(file):
     for col in balanced_data.columns:
         if col == fraud_column:  # only calculate the fraud columns 
             continue
-        
+        # creates a histogram out of the information on fraud transactions
+        fraud_data = balanced_data[balanced_data[fraud_column] == 1] 
         plt.figure(figsize=(12, 8))
-        if balanced_data[col].dtype in ['object', 'category'] or balanced_data[col].nunique() < 20:  # categorical 
-            top_values = balanced_data[col].value_counts().head(10)
+        if fraud_data[col].dtype in ['object', 'category'] or fraud_data[col].nunique() < 20:  # categorical 
+            top_values = fraud_data[col].value_counts().head(10)
             sns.barplot(x=top_values.index, y=top_values.values)
             plt.title(f"Top 10 Values in {col}")
-            plt.xticks(rotation=45, fontsize=16)  # Increase font size for x-axis
+            plt.xticks(rotation=45, fontsize=16)  
             plt.yticks(fontsize=16)
         else:  # numerical 
-            sns.histplot(balanced_data[col].dropna(), bins=10, kde=False)
+            sns.histplot(fraud_data[col].dropna(), bins=10, kde=False)
             plt.title(f"Histogram of {col}", fontsize = 10)
-            plt.xticks(fontsize=16)  # Increase font size for x-axis
+            plt.xticks(fontsize=16) 
             plt.yticks(fontsize=16)
         plt.tight_layout()
         plots[f'{col}_histogram'] = get_base64_plot()
